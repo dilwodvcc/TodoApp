@@ -16,7 +16,7 @@ if ($uri == '/') {
     }
     header('Location: /');
     exit();
-} elseif ($uri == '/update-status') {
+} elseif ($uri == '/update') {
     if (isset($_GET['id']) && isset($_GET['status'])) {
         $todo->updateStatus($_GET['id'], $_GET['status']);
     }

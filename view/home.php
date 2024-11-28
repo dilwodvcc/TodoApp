@@ -32,7 +32,7 @@
             border: none;
             margin-bottom: 10px;
             border-radius: 12px;
-            background-color: #ffffff;
+            background-color: rgba(135, 135, 135, 0.82);
             padding: 15px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
@@ -58,12 +58,12 @@
     <div class="row d-flex justify-content-center">
         <div class="todo-body">
             <h1 class="text-center todo-title mb-4">Todo App</h1>
-            <p class="text-center text-muted">Easily manage your tasks and deadlines.</p>
+            <p class="text-center text-muted">Vazifalarni qo'shib boring va o'z hayotingizni tartibga soling</p>
 
             <!-- Task Input Form -->
             <form method="POST" action="/store" class="mb-4">
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="title" placeholder="Enter task title" required>
+                    <input type="text" class="form-control" name="title" placeholder="Vazifani yozing !" required>
                 </div>
                 <div class="mb-3">
                     <input type="datetime-local" class="form-control" name="due_date" required>
@@ -75,7 +75,7 @@
                         <option value="completed">Completed</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success w-100">Add Task</button>
+                <button type="submit" class="btn btn-success w-100">Add</button>
             </form>
 
             <!-- Task List -->
@@ -87,7 +87,7 @@
                         <div>
                             <strong><?= htmlspecialchars($task['title']) ?></strong>
                             <br>
-                            <small class="text-muted">Due: <?= date('Y-m-d H:i', strtotime($task['due_date'])) ?></small>
+                            <small class="text-muted">Muddat: <?= date('Y-m-d H:i', strtotime($task['due_date'])) ?></small>
                         </div>
                         <div>
                             <span class="badge bg-<?= $task['status'] === 'completed' ? 'success' : ($task['status'] === 'in_progress' ? 'primary' : 'warning') ?>">
@@ -96,13 +96,13 @@
                         </div>
                         <div>
                             <?php if ($task['status'] !== 'completed'): ?>
-                                <a href="/update-status?id=<?= $task['id'] ?>&status=completed" class="btn btn-success btn-sm btn-status">Complete</a>
+                                <a href="/update?id=<?= $task['id'] ?>&status=completed" class="btn btn-success btn-sm btn-status">Complete</a>
                             <?php endif; ?>
                             <?php if ($task['status'] !== 'pending'): ?>
-                                <a href="/update-status?id=<?= $task['id'] ?>&status=pending" class="btn btn-warning btn-sm btn-status">Pending</a>
+                                <a href="/update?id=<?= $task['id'] ?>&status=pending" class="btn btn-warning btn-sm btn-status">Pending</a>
                             <?php endif; ?>
                             <?php if ($task['status'] !== 'in_progress'): ?>
-                                <a href="/update-status?id=<?= $task['id'] ?>&status=in_progress" class="btn btn-primary btn-sm btn-status">In Progress</a>
+                                <a href="/update?id=<?= $task['id'] ?>&status=in_progress" class="btn btn-primary btn-sm btn-status">In Progress</a>
                             <?php endif; ?>
                         </div>
                     </li>
