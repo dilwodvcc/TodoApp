@@ -7,13 +7,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: rgba(0, 0, 0, 0.82);
             font-family: 'Arial', sans-serif;
         }
 
         .todo-body {
             max-width: 60%;
-            background-color: #ffffff;
+            background-color: rgba(211, 205, 205, 0.82);
             border-radius: 16px;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -21,7 +21,7 @@
 
         .todo-title {
             font-weight: bold;
-            color: #495057;
+            color: #073f5c;
         }
 
         .form-control, .form-select, .btn {
@@ -32,14 +32,13 @@
             border: none;
             margin-bottom: 10px;
             border-radius: 12px;
-            background-color: rgba(135, 135, 135, 0.82);
+            background-color: rgba(0, 0, 0, 0.82);
             padding: 15px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
         .task-completed {
             text-decoration: line-through;
-            color: #adb5bd;
+            color: #c5c5c5;
         }
 
         .btn-status {
@@ -61,7 +60,7 @@
             <p class="text-center text-muted">Vazifalarni qo'shib boring va o'z hayotingizni tartibga soling</p>
 
             <!-- Task Input Form -->
-            <form method="POST" action="/store" class="mb-4">
+            <form method="POST" action="/todos" class="mb-4">
                 <div class="mb-3">
                     <input type="text" class="form-control" name="title" placeholder="Vazifani yozing !" required>
                 </div>
@@ -79,7 +78,7 @@
             </form>
 
             <!-- Task List -->
-            <ul class="list-group">
+            <ul class="list-group liigroup">
                 <?php /** @var TYPE_NAME $todos */
                 foreach ($todos as $task): ?>
                     <?php $taskClass = $task['status'] === 'completed' ? 'task-completed' : ''; ?>
