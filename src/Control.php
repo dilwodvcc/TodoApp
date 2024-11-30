@@ -12,7 +12,7 @@ class Control
 
     public function home()
     {
-        echo '<a href="/todos" class="btn btn-danger">Todo</a>';
+        require 'view/button.php';
     }
 
     public function showTodos()

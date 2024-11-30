@@ -11,3 +11,4 @@ $router->getRoute('/', [$control, 'home']);
 $router->getRoute('/todos', [$control, 'showTodos']);
 $router->getRoute('/update', [$control, 'updateTodo']);
 $router->postRoute('/todos', [$control, 'storeTodo']);
+

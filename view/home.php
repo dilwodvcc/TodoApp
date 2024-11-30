@@ -50,6 +50,28 @@
         .badge {
             font-size: 0.8rem;
         }
+        .custom-button {
+            position: relative;
+            background: linear-gradient(90deg, #7ef0ff, #17565e);
+            color: #fff;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 15px rgba(117, 255, 149, 0.4);
+            text-decoration: none;
+            overflow: hidden;
+        }
+
+        .custom-button:hover {
+            background: linear-gradient(90deg, #8eff75, #39fd3d);
+            box-shadow: 0 12px 20px rgba(85, 204, 81, 0.6);
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 <body>
@@ -74,7 +96,7 @@
                         <option value="completed">Completed</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-success w-100">Add</button>
+                <button type="submit" class="custom-button btn btn-success w-100">Add</button>
             </form>
 
             <!-- Task List -->
