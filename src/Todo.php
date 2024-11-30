@@ -30,4 +30,10 @@ class Todo {
         $stmt->bindParam(':status', $status);
         $stmt->execute();
     }
+    public function delete($task_id) {
+        $stmt = $this->db->conn->prepare("DELETE FROM todo WHERE id = :id");
+        $stmt->bindParam(':id', $task_id);
+        $stmt->execute();
+    }
+
 }

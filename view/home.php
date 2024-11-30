@@ -103,30 +103,31 @@
             <ul class="list-group liigroup">
                 <?php /** @var TYPE_NAME $todos */
                 foreach ($todos as $task): ?>
-                    <?php $taskClass = $task['status'] === 'completed' ? 'task-completed' : ''; ?>
-                    <li class="list-group-item d-flex justify-content-between align-items-center <?= $taskClass ?>">
-                        <div>
-                            <strong><?= htmlspecialchars($task['title']) ?></strong>
-                            <br>
-                            <small class="text-muted">Muddat: <?= date('Y-m-d H:i', strtotime($task['due_date'])) ?></small>
-                        </div>
-                        <div>
-                            <span class="badge bg-<?= $task['status'] === 'completed' ? 'success' : ($task['status'] === 'in_progress' ? 'primary' : 'warning') ?>">
-                                <?= ucfirst($task['status']) ?>
-                            </span>
-                        </div>
-                        <div>
-                            <?php if ($task['status'] !== 'completed'): ?>
-                                <a href="/update?id=<?= $task['id'] ?>&status=completed" class="btn btn-success btn-sm btn-status">Complete</a>
-                            <?php endif; ?>
-                            <?php if ($task['status'] !== 'pending'): ?>
-                                <a href="/update?id=<?= $task['id'] ?>&status=pending" class="btn btn-warning btn-sm btn-status">Pending</a>
-                            <?php endif; ?>
-                            <?php if ($task['status'] !== 'in_progress'): ?>
-                                <a href="/update?id=<?= $task['id'] ?>&status=in_progress" class="btn btn-primary btn-sm btn-status">In Progress</a>
-                            <?php endif; ?>
-                        </div>
-                    </li>
+                <?php $taskClass = $task['status'] === 'completed' ? 'task-completed' : ''; ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center <?= $taskClass ?>">
+                    <div>
+                        <strong><?= htmlspecialchars($task['title']) ?></strong>
+                        <br>
+                        <small class="text-muted">Muddat: <?= date('Y-m-d H:i', strtotime($task['due_date'])) ?></small>
+                    </div>
+                    <div>
+                <span class="badge bg-<?= $task['status'] === 'completed' ? 'success' : ($task['status'] === 'in_progress' ? 'primary' : 'warning') ?>">
+                    <?= ucfirst($task['status']) ?>
+                </span>
+                    </div>
+                    <div>
+                        <?php if ($task['status'] !== 'completed'): ?>
+                            <a href="/update?id=<?= $task['id'] ?>&status=completed" class="btn btn-success btn-sm btn-status">Complete</a>
+                        <?php endif; ?>
+                        <?php if ($task['status'] !== 'pending'): ?>
+                            <a href="/update?id=<?= $task['id'] ?>&status=pending" class="btn btn-warning btn-sm btn-status">Pending</a>
+                        <?php endif; ?>
+                        <?php if ($task['status'] !== 'in_progress'): ?>
+                            <a href="/update?id=<?= $task['id'] ?>&status=in_progress" class="btn btn-primary btn-sm btn-status">In Progress</a>
+                        <?php endif; ?>
+                        <a href="/delete?id=<?= $task['id'] ?>" class="btn btn-danger btn-sm btn-status">Delete</a>
+                    </div>
+                </li>
                 <?php endforeach; ?>
             </ul>
         </div>

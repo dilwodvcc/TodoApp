@@ -38,4 +38,12 @@ class Control
         header('Location: /todos');
         exit();
     }
+    public function deleteTodo()
+    {
+        if (isset($_GET['id'])) {
+            $this->todo->delete($_GET['id']);
+        }
+        header('Location: /todos');
+        exit();
+    }
 }
