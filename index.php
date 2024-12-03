@@ -9,6 +9,9 @@ $control = new Control();
 
 $router->getRoute('/', [$control, 'home']);
 $router->getRoute('/todos', [$control, 'showTodos']);
-$router->getRoute('/update', [$control, 'updateTodo']);
-$router->postRoute('/todos', [$control, 'storeTodo']);
-$router->getRoute('/delete', [$control, 'deleteTodo']);
+$router->getRoute('/todos/{id}/edit', function ($id) use ($control) {
+    $control->updateTodoForm($id);
+});
+$router->postRoute('/todos/{id}/edit', function ($id) use ($control) {
+    $control->updateTodoData($id);
+});

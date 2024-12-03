@@ -10,21 +10,31 @@ class Control
         $this->todo = new Todo();
     }
 
+    // Home sahifasini ko'rsatish
     public function home()
     {
         require 'view/button.php';
     }
 
+    // Todosni ko'rsatish
     public function showTodos()
     {
         $todos = $this->todo->get();
         view('home', ['todos' => $todos]);
     }
 
-    public function updateTodo()
+    // Todo taskini tahrirlash formasi
+    public function updateTodoForm($id)
     {
-        if (isset($_GET['id']) && isset($_GET['status'])) {
-            $this->todo->updateStatus($_GET['id'], $_GET['status']);
+        $task = $this->todo->getById($id);
+        view('edit', ['task' => $task]);
+    }
+
+    // Todo taskini yangilash
+    public function updateTodoData($id)
+    {
+        if (isset($_POST['title'], $_POST['due_date'], $_POST['status'])) {
+            $this->todo->update($id, $_POST['title'], $_POST['due_date'], $_POST['status']);
         }
         header('Location: /todos');
         exit();
@@ -34,14 +44,6 @@ class Control
     {
         if (isset($_POST['title'], $_POST['due_date'], $_POST['status'])) {
             $this->todo->store($_POST['title'], $_POST['due_date'], $_POST['status']);
-        }
-        header('Location: /todos');
-        exit();
-    }
-    public function deleteTodo()
-    {
-        if (isset($_GET['id'])) {
-            $this->todo->delete($_GET['id']);
         }
         header('Location: /todos');
         exit();

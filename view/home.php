@@ -7,49 +7,34 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: rgba(0, 0, 0, 0.82);
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
             font-family: 'Arial', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .todo-body {
             max-width: 60%;
-            background-color: rgba(211, 205, 205, 0.82);
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .todo-title {
             font-weight: bold;
-            color: #073f5c;
+            color: #17565e;
         }
 
-        .form-control, .form-select, .btn {
+        .form-control, .form-select {
             border-radius: 8px;
         }
 
-        li {
-            border: none;
-            margin-bottom: 10px;
-            border-radius: 12px;
-            background-color: rgba(0, 0, 0, 0.82);
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .task-completed {
-            text-decoration: line-through;
-            color: #c5c5c5;
-        }
-
-        .btn-status {
-            margin: 0 3px;
-            font-size: 0.85rem;
-            padding: 5px 10px;
-        }
-
-        .badge {
-            font-size: 0.8rem;
-        }
         .custom-button {
             position: relative;
             background: linear-gradient(90deg, #7ef0ff, #17565e);
@@ -63,7 +48,6 @@
             cursor: pointer;
             transition: all 0.4s ease;
             box-shadow: 0 8px 15px rgba(117, 255, 149, 0.4);
-            text-decoration: none;
             overflow: hidden;
         }
 
@@ -72,6 +56,22 @@
             box-shadow: 0 12px 20px rgba(85, 204, 81, 0.6);
             transform: translateY(-3px);
         }
+
+        .task-completed {
+            text-decoration: line-through;
+            background-color: rgba(40, 167, 69, 0.2);
+            color: #155724;
+        }
+
+        .task-in-progress {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: #856404;
+        }
+
+        .task-pending {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
@@ -79,12 +79,12 @@
     <div class="row d-flex justify-content-center">
         <div class="todo-body">
             <h1 class="text-center todo-title mb-4">Todo App</h1>
-            <p class="text-center text-muted">Vazifalarni qo'shib boring va o'z hayotingizni tartibga soling</p>
+            <p class="text-center text-muted">Vazifalarni qo'shing va kuzatib boring!</p>
 
             <!-- Task Input Form -->
             <form method="POST" action="/todos" class="mb-4">
                 <div class="mb-3">
-                    <input type="text" class="form-control" name="title" placeholder="Vazifani yozing !" required>
+                    <input type="text" class="form-control" name="title" placeholder="Vazifani yozing!" required>
                 </div>
                 <div class="mb-3">
                     <input type="datetime-local" class="form-control" name="due_date" required>
@@ -99,35 +99,24 @@
                 <button type="submit" class="custom-button btn btn-success w-100">Add</button>
             </form>
 
-            <!-- Task List -->
-            <ul class="list-group liigroup">
-                <?php /** @var TYPE_NAME $todos */
-                foreach ($todos as $task): ?>
-                <?php $taskClass = $task['status'] === 'completed' ? 'task-completed' : ''; ?>
-                <li class="list-group-item d-flex justify-content-between align-items-center <?= $taskClass ?>">
-                    <div>
-                        <strong><?= htmlspecialchars($task['title']) ?></strong>
-                        <br>
-                        <small class="text-muted">Muddat: <?= date('Y-m-d H:i', strtotime($task['due_date'])) ?></small>
-                    </div>
-                    <div>
-                <span class="badge bg-<?= $task['status'] === 'completed' ? 'success' : ($task['status'] === 'in_progress' ? 'primary' : 'warning') ?>">
-                    <?= ucfirst($task['status']) ?>
-                </span>
-                    </div>
-                    <div>
-                        <?php if ($task['status'] !== 'completed'): ?>
-                            <a href="/update?id=<?= $task['id'] ?>&status=completed" class="btn btn-success btn-sm btn-status">Complete</a>
-                        <?php endif; ?>
-                        <?php if ($task['status'] !== 'pending'): ?>
-                            <a href="/update?id=<?= $task['id'] ?>&status=pending" class="btn btn-warning btn-sm btn-status">Pending</a>
-                        <?php endif; ?>
-                        <?php if ($task['status'] !== 'in_progress'): ?>
-                            <a href="/update?id=<?= $task['id'] ?>&status=in_progress" class="btn btn-primary btn-sm btn-status">In Progress</a>
-                        <?php endif; ?>
-                        <a href="/delete?id=<?= $task['id'] ?>" class="btn btn-danger btn-sm btn-status">Delete</a>
-                    </div>
-                </li>
+            <ul class="list-group">
+                <?php foreach ($todos as $task): ?>
+                    <li class="list-group-item d-flex justify-content-between align-items-center
+                        <?php
+                    if ($task['status'] === 'completed') echo 'task-completed';
+                    elseif ($task['status'] === 'in_progress') echo 'task-in-progress';
+                    else echo 'task-pending';
+                    ?>">
+                        <div>
+                            <strong><?= htmlspecialchars($task['title']) ?></strong>
+                            <br>
+                            <small class="text-muted">Muddat: <?= date('Y-m-d H:i', strtotime($task['due_date'])) ?></small>
+                        </div>
+                        <div>
+                            <a href="/todos/<?= $task['id'] ?>/edit" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="/delete/<?= $task['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         </div>
