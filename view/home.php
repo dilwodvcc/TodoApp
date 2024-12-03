@@ -97,10 +97,11 @@
                     </select>
                 </div>
                 <button type="submit" class="custom-button btn btn-success w-100">Add</button>
-            </form>
+                <form method="POST" action="/todos" class="mb-4">
 
             <ul class="list-group">
-                <?php foreach ($todos as $task): ?>
+                <?php /** @var TYPE_NAME $todos */
+                foreach ($todos as $task): ?>
                     <li class="list-group-item d-flex justify-content-between align-items-center
                         <?php
                     if ($task['status'] === 'completed') echo 'task-completed';
@@ -114,7 +115,7 @@
                         </div>
                         <div>
                             <a href="/todos/<?= $task['id'] ?>/edit" class="btn btn-primary btn-sm">Edit</a>
-                            <a href="/delete/<?= $task['id'] ?>" class="btn btn-danger btn-sm">Delete</a>
+                            <a href="/todos/<?= $task['id'] ?>/delete" class="btn btn-danger btn-sm">Delete</a>
                         </div>
                     </li>
                 <?php endforeach; ?>

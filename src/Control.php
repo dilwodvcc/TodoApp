@@ -48,4 +48,34 @@ class Control
         header('Location: /todos');
         exit();
     }
+    public function deleteTodo($id)
+    {
+        $this->todo->delete($id);
+        header('Location: /todos');
+        exit();
+    }
+
+    public function deleteTodoData($id)
+    {
+        // Ma'lumotlar bazasidan o'chirish
+        if ($id) {
+            /** @var TYPE_NAME $db */
+            $db->delete("DELETE FROM todos WHERE id = $id");
+            echo "Todo o'chirildi!";
+        } else {
+            echo "ID topilmadi!";
+        }
+    }
+
+    public function index()
+    {
+        /** @var TYPE_NAME $db */
+        $todos = $db->select("SELECT * FROM todos");
+        foreach ($todos as $todo) {
+            echo "<div>{$todo['task']} 
+                    <a href='/delete/{$todo['id']}'>O'chirish</a>
+                  </div>";
+        }
+    }
+
 }

@@ -39,4 +39,10 @@ class Router
     {
         $this->resolveRoute($route, $callback, 'POST');
     }
+    // Router.php
+    public function deleteRoute($route, $callback): void
+    {
+        $this->resolveRoute($route, $callback, 'DELETE');
+    }
+
 }

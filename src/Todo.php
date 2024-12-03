@@ -1,10 +1,6 @@
 <?php
 require_once 'DB.php';
 
-/**
- * @method update($id, mixed $title, mixed $due_date, mixed $status)
- * @method getById($id)
- */
 class Todo
 {
     private $db;
