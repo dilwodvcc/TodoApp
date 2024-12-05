@@ -1,5 +1,5 @@
 <?php
-
+require 'bootstrap.php';
 require 'src/Router.php';
 require 'src/Control.php';
 require 'helpers.php';

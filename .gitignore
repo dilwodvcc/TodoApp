@@ -1,2 +1,5 @@
 #idea ignor
 .idea
+#vendor
+vendor
+.env

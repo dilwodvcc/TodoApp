@@ -60,5 +60,4 @@ class Todo
         $stmt->bindParam(':status', $status);
         $stmt->execute();
     }
-
 }
