@@ -3,21 +3,37 @@
 namespace App;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Bot
 {
-    private $botToken;
-    private $client;
+    const string API_URL = "https://api.telegram.org/bot";
+    public $client;
+    private $token;
 
-    public function __construct($botToken)
+    /**
+     * @throws GuzzleException
+     */
+    public function makeRequest($method, $data = []): \Psr\Http\Message\ResponseInterface
     {
-        $this->botToken = $botToken;
-        $this->client = new Client();
+        $this->token = $_ENV['TG_TOKEN'];
+        $this->client = new Client([
+            'base_uri' => self::API_URL . $this->token . '/',
+            'timeout'  => 5.0,
+        ]);
+        return $this->client->request('POST', $method, ['json' => $data]);
     }
-
-    public function getMe()
+    public function sendMessageWithKeyboard($chatId, $message, $keyboard): void
     {
-        $response = $this->client->request('GET', "https://api.telegram.org/bot{$this->botToken}/getMe");
-        return json_decode($response->getBody(), true);
+        $data = [
+            'chat_id' => $chatId,
+            'text' => $message,
+            'reply_markup' => json_encode([
+                'keyboard' => $keyboard,
+                'resize_keyboard' => true,
+                'one_time_keyboard' => false
+            ])
+        ];
+        file_get_contents(self::API_URL . $this->token ."sendMessage?" . http_build_query($data));
     }
 }

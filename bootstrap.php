@@ -1,10 +1,5 @@
 <?php
-require 'vendor/autoload.php';
-$dotevn =  \Dotenv\Dotenv::createImmutable(__DIR__);
-$dotevn->load();
+require "vendor/autoload.php";
 
-$botToken = $_ENV['BOT_TOKEN'] ?? null;
-
-if (!$botToken) {
-    die("BOT_TOKEN aniqlanmadi. .env faylni tekshiring.\n");
-}
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();

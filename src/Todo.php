@@ -1,58 +1,57 @@
 <?php
-require_once 'DB.php';
+namespace App;
+require_once("vendor/autoload.php");
+
 
 class Todo
 {
-    private $db;
-
-    public function __construct()
-    {
+    public DB $db;
+    public function __construct(){
         $this->db = new DB();
     }
-
-    // Barcha vazifalarni olish
-    public function get()
+    public function store(string $title, string $dueDate): bool
     {
-        $stmt = $this->db->conn->prepare("SELECT * FROM todo ORDER BY due_date ASC");
+        $sql = "INSERT INTO todo (title, status, due_date,created_at) VALUES (?, ?, ?,NOW())";
+        $stmt = $this->db->pdo->prepare($sql);
+        return $stmt->execute([$title, 'pending', $dueDate]);
+    }
+    public function getAllTodos(): false|array
+    {
+        $sql = "Select * from todo";
+        $stmt = $this->db->pdo->query($sql);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    public function edit(int $id): false|array
+    {
+        $sql = "Select * from todo where id=:id";
+        $stmt = $this->db->pdo->prepare($sql);
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
-    // ID bo'yicha vazifani olish
-    public function getById($id)
+    public function delete(int $id): bool
     {
-        $stmt = $this->db->conn->prepare("SELECT * FROM todo WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $sql = "DELETE FROM todo WHERE id =:id";
+        return $this->db->pdo->prepare($sql)->execute([
+            'id' => $id
+        ]);
     }
 
-    // Vazifa qo'shish
-    public function store($title, $due_date, $status)
+    /**
+     * @throws \DateMalformedStringException
+     */
+    public function update(int $id, string $title, string $status, string $dueDate): bool
     {
-        $stmt = $this->db->conn->prepare("INSERT INTO todo (title, due_date, status) VALUES (:title, :due_date, :status)");
-        $stmt->bindParam(':title', $title, PDO::PARAM_STR);
-        $stmt->bindParam(':due_date', $due_date, PDO::PARAM_STR);
-        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
-        $stmt->execute();
-    }
-
-    // Vazifani yangilash
-    public function update($id, $title, $due_date, $status)
-    {
-        $stmt = $this->db->conn->prepare("UPDATE todo SET title = :title, due_date = :due_date, status = :status WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->bindParam(':title', $title, PDO::PARAM_STR);
-        $stmt->bindParam(':due_date', $due_date, PDO::PARAM_STR);
-        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
-        $stmt->execute();
-    }
-
-    // Vazifani o'chirish
-    public function delete($id)
-    {
-        $stmt = $this->db->conn->prepare("DELETE FROM todo WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
+        $dueDate = new \DateTime($dueDate);
+        $sql = "UPDATE todo SET title=:title, status=:status, due_date=:due_date, updated_at=NOW() WHERE id=:id";
+        $dueDate = $dueDate->format('Y-m-d H:i:s');
+        $stmt = $this->db->pdo->prepare($sql);
+        return $stmt->execute([
+            'id' => $id,
+            'title' => $title,
+            'status' => $status,
+            'due_date' => $dueDate
+        ]);
     }
 }

@@ -1,43 +1,22 @@
 <?php
-
-use GuzzleHttp\Client;
+date_default_timezone_set('Asia/Tashkent');
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 require 'bootstrap.php';
-require 'src/Router.php';
-require 'src/Control.php';
-require 'helpers.php';
+require_once 'src/Todo.php';
 
+use App\Todo;
+use App\Router;
+use App\Controller;
+
+$todo = new Todo();
 $router = new Router();
-$control = new Control();
+$controller = new Controller($todo);
 
-$router->getRoute('/', [$control, 'home']);
-$router->getRoute('/todos', [$control, 'showTodos']);
-$router->getRoute('/todos/{id}/delete', [$control, 'deleteTodo']);
-$router->getRoute('/todos/{id}/edit', function ($id) use ($control) {
-    $control->updateTodoForm($id);
-});
-$router->postRoute('/todos/{id}/edit', function ($id) use ($control) {
-    $control->updateTodoData($id);
-});
-$router->postRoute('/todos', [$control, 'storeTodo']);
-
-$botToken = $_ENV['BOT_TOKEN'] ?? null;
-if (!$botToken) {
-    die("BOT_TOKEN aniqlanmadi. .env faylni tekshiring.\n");
-}
-
-$client = new Client();
-
-try {
-    $response = $client->request('GET', "https://api.telegram.org/bot{$botToken}/getMe");
-
-    if ($response->getStatusCode() === 200) {
-        $data = json_decode($response->getBody(), true);
-        echo "Bot ma'lumotlari:\n";
-        print_r($data);
-    } else {
-        echo "So'rov muvaffaqiyatsiz: " . $response->getReasonPhrase();
-    }
-} catch (Exception $e) {
-    echo "Xato yuz berdi: " . $e->getMessage();
-}
+$router->get('/', fn() => require 'views/home.php');
+$router->get('/bot', fn() => require 'app/bot.php');
+$router->get('/todos', fn() => $controller->showAll());
+$router->get('/todos/{id}/delete', fn($id) => $controller->delete($id));
+$router->get('/todos/{id}/edit', fn($id) => $controller->showEdit($id));
+$router->put('/todos/{id}/update', fn($id) => $controller->update($id) );
+$router->post('/todos', fn() => $controller->store());

@@ -1,16 +1,20 @@
 <?php
+namespace App;
+
 class DB
 {
-    public $host;
-    public $user;
-    public $pass;
-    public $db_name;
-    public $conn;
+    public mixed $host;
+    public mixed $dbname;
+    public mixed $user;
+    public mixed $password;
+    public \PDO $pdo;
+
     public function __construct(){
         $this->host = $_ENV['DB_HOST'];
+        $this->dbname = $_ENV['DB_NAME'];
         $this->user = $_ENV['DB_USER'];
-        $this->pass = $_ENV['DB_PASSWORD'];
-        $this->db_name = $_ENV['DB_NAME'];
-        $this->conn = new PDO("mysql:host=$this->host;dbname=$this->db_name", $this->user, $this->pass);
+        $this->password = $_ENV['DB_PASSWORD'];
+
+        $this->pdo = new \PDO("mysql:host=$this->host;dbname=$this->dbname", $this->user, $this->password);
     }
 }
