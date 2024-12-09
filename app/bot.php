@@ -14,15 +14,14 @@ if (isset($update['message'])) {
         $text = $message['text'];
         if ($text == '/start') {
             $welcomeMessage = "Assalomu alaykum! 😊\n
-                I can help with:\n\n⛅ To know about weather in Tashkent  click WEATHER.\n
-                💵 To know about currencies click CURRENCIES.";
+                Abdullohning telegram botiga xush kelibsz!";
             $bot->sendMessageWithKeyboard($message['chat']['id'], $welcomeMessage, [["WEATHER"], ["CURRENCIES"]]);
-            $response = "💵 Valyutalar kurslarini hisoblash uchun miqdor va valyuta kodini kiriting.\n\nMisol: `100 USD`";
+            $response = "💵 valyuta almawinw  hali bizada mavjud emas!";
 
 
             $bot->makeRequest('sendMessage', [
                 'chat_id' => $message['chat']['id'],
-                'text' => 'Welcome!  This is a telegram bot of Abdulaziz. To know about currencies, type "/currency"',
+                'text' => 'Welcome!  This is a telegram bot of Abdullloh. To know about currencies, type "/currency"',
                 'reply_markup' => json_encode([
                     'resize_keyboard' => true,
                     'keyboard' => [
